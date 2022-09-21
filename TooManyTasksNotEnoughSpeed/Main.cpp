@@ -9,6 +9,10 @@ auto main() -> int32_t
   std::signal(SIGINT, handle_process_finalization);
   std::vector<std::thread> threads_to_process_emails{};
 
+  std::cout << "Type ^C to kill main thread." << std::endl;
+  std::cout << "Created by Jeremy Fonseca [https://github.com/fontseca]\n"
+            << std::endl;
+
   threads_to_process_emails.push_back(std::thread(process_single_queue, "R2", "iso45823@xcoxc.com"));
   // threads_to_process_emails.push_back(std::thread(process_single_queue, "R1", "fhm70240@xcoxc.com"));
 
