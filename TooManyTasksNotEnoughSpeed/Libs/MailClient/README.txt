@@ -1,0 +1,1 @@
+Source code at: https://github.com/embeddedmz/mailclient-cpp
