@@ -14,6 +14,7 @@
 #include "Email.hpp"
 #include "Response.hpp"
 #include "EmailGenerator.hpp"
+#include "EmailPriorityComparator.hpp"
 #include "SMTPClient.h"
 
 struct EmailQueueManager
@@ -28,7 +29,7 @@ struct EmailQueueManager
     this->OutFile.close();
   }
 
-  std::queue<Email> EmailsQueue{};
+  std::priority_queue<Email, std::vector<Email>, EmailPriorityComparator> EmailsQueue;
 
   void QueueProcessor(const std::string_view recipient_name, const std::string_view recipient_email)
   {
@@ -42,7 +43,7 @@ struct EmailQueueManager
       this->EmailsQueue = this->GenerateEmails(dist(gen));
       while (!this->EmailsQueue.empty())
       {
-        Email email = this->EmailsQueue.front();
+        Email email = this->EmailsQueue.top();
         this->EmailsQueue.pop();
 
         if (email.Status == EmailStatus::Sent)
@@ -61,7 +62,7 @@ struct EmailQueueManager
 private:
   std::fstream OutFile;
 
-  std::queue<Email> GenerateEmails(uint32_t quantity)
+  std::priority_queue<Email, std::vector<Email>, EmailPriorityComparator> GenerateEmails(uint32_t quantity)
   {
     return EmailGenerator::GenerateMany(quantity);
   }
