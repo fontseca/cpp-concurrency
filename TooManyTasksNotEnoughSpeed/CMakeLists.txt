@@ -12,6 +12,7 @@ add_executable(
     Includes/Email.hpp
     Includes/EmailQueueManager.hpp
     Includes/EmailGenerator.hpp
+    Includes/Main.hpp
     Main.cpp
 )
 
