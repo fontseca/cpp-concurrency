@@ -47,7 +47,14 @@ struct EmailQueueManager
         this->EmailsQueue.pop();
 
         if (email.Status == EmailStatus::Sent)
-          this->OutFile << email.Id << ", " << email.Attempts << ", " << email.Priority << std::endl;
+        {
+          this->OutFile << email.Id << ", " << email.Attempts << ", ";
+          if (email.Priority > 1)
+            this->OutFile << "true";
+          else
+            this->OutFile << "false";
+          this->OutFile << std::endl;
+        }
 
         if (email.Status == EmailStatus::Pending)
         {
