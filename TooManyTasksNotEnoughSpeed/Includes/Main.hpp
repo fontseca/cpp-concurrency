@@ -53,6 +53,8 @@ void handle_process_finalization(int signum)
     gp << "plot 'data.dat' using 1:3:xtic(2) with boxes";
 
     gp.close();
+
+    std::cout << "\ntotal time to process emails: " << elapsed_time.count() << "s" << std::endl;
     exit(signum);
   }
 };
