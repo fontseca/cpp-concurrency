@@ -19,6 +19,13 @@ Mail processing in 8 threads in parallel.
 
 ![Bar chart](./assets/out.jpeg)
 
+
+## Received emails
+
+![Bar chart](./assets/Screenshot%20from%202022-09-22%2012-49-17.jpg)
+
+> I used [10 Minute Mail](https://10minutemail.net/) to generate fake emails.
+
 ## Author
 
 ### [Jeremy Fonseca](https://github.com/fontseca)
