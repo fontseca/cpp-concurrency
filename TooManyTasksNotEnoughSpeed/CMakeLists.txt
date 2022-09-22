@@ -27,4 +27,5 @@ target_link_libraries(
   ${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/Libs/MailClient/Binaries/libmailclient.a
     curl
+    Boost::iostreams
 )

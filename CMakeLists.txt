@@ -8,4 +8,8 @@ project(
   DESCRIPTION "Super-Simple C++ Gmail client."
 )
 
+set(Boost_NO_WARN_NEW_VERSIONS ON)
+find_package(Boost 1.80.0 REQUIRED COMPONENTS iostreams)
+
+
 add_subdirectory(${PROJECT_NAME})
