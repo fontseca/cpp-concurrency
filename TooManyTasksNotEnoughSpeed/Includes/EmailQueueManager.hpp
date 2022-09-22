@@ -9,6 +9,7 @@
 #include <queue>
 #include <random>
 #include <fstream>
+#include <map>
 
 #include "Common.hpp"
 #include "Email.hpp"
@@ -31,20 +32,29 @@ struct EmailQueueManager
 
   std::priority_queue<Email, std::vector<Email>, EmailPriorityComparator> EmailsQueue;
 
-  void QueueProcessor(const std::string_view recipient_name, const std::string_view recipient_email)
+  void QueueProcessor(
+      uint32_t thread_id,
+      std::map<uint32_t, std::map<std::string, uint32_t>> *threads_map,
+      const std::string_view recipient_name,
+      const std::string_view recipient_email)
   {
     std::random_device dev;
     std::mt19937 gen(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> dist(1, 8);
+    std::uniform_int_distribution<std::mt19937::result_type> dist(1, 10);
 
     while (true)
     {
-      // Generate [1, 10] random emails.
-      this->EmailsQueue = this->GenerateEmails(dist(gen));
+      auto generated_emails_queue = this->GenerateEmails(dist(gen));
+      this->EmailsQueue = generated_emails_queue;
+
+      (*threads_map)[thread_id]["added"] += generated_emails_queue.size();
+
       while (!this->EmailsQueue.empty())
       {
         Email email = this->EmailsQueue.top();
         this->EmailsQueue.pop();
+
+        (*threads_map)[thread_id]["executed"] += 1;
 
         if (email.Status == EmailStatus::Sent)
         {
@@ -58,7 +68,8 @@ struct EmailQueueManager
 
         if (email.Status == EmailStatus::Pending)
         {
-          Response sending_response = this->SendEmail(email, recipient_name, recipient_email); // (Should be done in a thread.)
+          (*threads_map)[thread_id]["failed"] += 1;
+          Response sending_response = this->SendEmail(email, recipient_name, recipient_email);
           this->EmailsQueue.push(sending_response.ResponseEmail);
         }
       }
