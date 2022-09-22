@@ -49,6 +49,8 @@ void handle_process_finalization(int signum)
     file_data.close();
 
     gp << "set terminal jpeg\n";
+    gp << "set boxwidth 0.5\n";
+    gp << "set style fill solid\n";
     gp << "set output 'out.jpeg'\n";
     gp << "plot 'data.dat' using 1:3:xtic(2) with boxes";
 
